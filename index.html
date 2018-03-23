@@ -1,0 +1,104 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="lib/js/vis.js"></script>
+  <script type="text/javascript" src="data/graph.js"></script>
+  <script type="text/javascript" src="data/springstorm.js"></script>
+  <link href="lib/css/vis.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+
+  <title>WILD Springstorm</title>
+</head>
+
+<body>
+<div style="overflow: auto;">
+<div id="brainstormbox" style="width: 50%; float:left">
+<h1>Brainstorm</h1>
+<div id="mynetwork"></div>
+</div>
+
+<div id="springstormbox" style="width: 50%; float:right">
+<h1>Springstorm</h1>
+<div id="mydescription">
+<h2 id="ssname"></h2>
+<h3 id="concept"></h3>
+<p id="conceptcontent"></p>
+<h3 id="system"></h3>
+<p id="systemcontent"></p>
+<h3 id="mechanics"></h3>
+<p id="mechanicscontent"></p>
+<br></div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+  // create a network
+  var container = document.getElementById('mynetwork');
+  nodes = new vis.DataSet(nodes);
+  edges = new vis.DataSet(edges);
+  var data= {
+    nodes: nodes,
+    edges: edges,
+  }; // from data/graph.js
+  var options = {
+    nodes: {
+      shape: 'box',
+      color: '#eeee30',
+      margin: 10,
+      widthConstraint: {
+        maximum: 200
+      }
+    },
+    layout: {
+      hierarchical: {
+	direction: "UD",
+	sortMethod: "directed"
+      }
+    },
+    physics: {
+      enabled: true
+    },
+    width : '100%',
+    height: '100%',
+  };
+  // set colors (and stars) for the ones which have metadata
+  var updateList = [];
+  for(k in springstorm){
+	updateList.push({id: k, color:{background:'#aaffaa', highlight:'#cc80ff', border: '#558855'}});
+	if(springstorm[k].hasOwnProperty("starred")){
+		updateList.push({id: k, shape:"box", borderWidth: 2, color:{background:'#009900', highlight:'#ff3399', border: '#666633'}, font: {color: '#ffffff'}});
+	}
+  }
+  nodes.update(updateList);
+  var network = new vis.Network(container, data, options);
+  
+  // events
+  network.on("click", function (params) {
+	if (params.nodes.length > 0){
+       	  var nodeName = params.nodes[0];
+	  if(springstorm[nodeName] != undefined){
+		document.getElementById('ssname').innerHTML = nodeName;
+		document.getElementById('concept').innerHTML = "Concept";
+		document.getElementById('conceptcontent').innerHTML = springstorm[nodeName].concept;
+		document.getElementById('system').innerHTML = "System";
+		document.getElementById('systemcontent').innerHTML = springstorm[nodeName].system;
+		document.getElementById('mechanics').innerHTML = "Mechanics";
+		document.getElementById('mechanicscontent').innerHTML = springstorm[nodeName].mechanics;
+	  } else {
+		document.getElementById('ssname').innerHTML = "";
+		document.getElementById('concept').innerHTML = "";
+		document.getElementById('conceptcontent').innerHTML = "";
+		document.getElementById('system').innerHTML = "";
+		document.getElementById('systemcontent').innerHTML = "";
+		document.getElementById('mechanics').innerHTML = "";
+		document.getElementById('mechanicscontent').innerHTML = "";
+   	  }
+	  //console.log('click event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+	}
+  });
+</script>
+
+</body>
+</html>
+
