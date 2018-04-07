@@ -2,7 +2,7 @@ var nodes = [
 		{"id": "risorse limitate", "label": "risorse limitate"},
 		{"id": "mutazioni", "label": "mutazioni"},
 		{"id": "poteri", "label": "poteri"},
-		{"id": "supremazia", "label": "supremazia"}
+		{"id": "supremazia", "label": "supremazia"},
 
 		{"id": "mancanza di potere", "label": "mancanza di potere"},
 		{"id": "mancanza di magia", "label": "mancanza di magia"},
